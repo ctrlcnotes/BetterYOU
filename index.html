@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetterYOU - Top 10 Self-Improvement Habits</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ── Color Palette ── */
+        :root {
+            --blood-red: #74070E;
+            --vanilla: #F4E3B2;
+            --drab-brown: #45462A;
+            --cinereous: #947268;
+            --black-bean: #310E10;
+
+            /* Semantic mappings */
+            --bg: #faf5e9;
+            --bg-accent: var(--vanilla);
+            --card-bg: var(--black-bean);
+            --card-bg-hover: #3d1518;
+            --header-bg: var(--blood-red);
+            --accent: var(--drab-brown);
+            --text-main: var(--black-bean);
+            --text-muted: var(--cinereous);
+            --text-on-dark: var(--vanilla);
+            --text-on-dark-muted: #d4c9a8;
+            --link-color: #e8c87a;
+            --link-hover: #f5dfa0;
+            --border-subtle: rgba(49, 14, 16, 0.1);
+            --shadow: rgba(49, 14, 16, 0.12);
+        }
+
+        /* ── Reset ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        /* ── Header ── */
+        header {
+            background: linear-gradient(135deg, var(--blood-red) 0%, var(--black-bean) 100%);
+            color: var(--text-on-dark);
+            text-align: center;
+            padding: 65px 20px 55px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(116, 7, 14, 0.3), transparent 60%);
+            pointer-events: none;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            height: 60px;
+            background: var(--bg);
+            border-radius: 50% 50% 0 0;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 700;
+            font-size: 3.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            color: var(--vanilla);
+            position: relative;
+            z-index: 1;
+        }
+
+        header p.subtitle {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: var(--text-on-dark-muted);
+            max-width: 500px;
+            margin: 0 auto;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── About Section ── */
+        .about-section {
+            max-width: 1000px;
+            margin: 50px auto 40px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .about-card {
+            background: var(--black-bean);
+            color: var(--text-on-dark);
+            border-radius: 14px;
+            padding: 30px 24px;
+            text-align: center;
+            border-bottom: 3px solid var(--blood-red);
+        }
+
+        .about-card h3 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--vanilla);
+        }
+
+        .about-card h3 .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border: 1.5px solid var(--cinereous);
+            border-radius: 50%;
+            font-size: 0.7rem;
+            color: var(--cinereous);
+        }
+
+        .about-card p {
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: var(--text-on-dark-muted);
+            font-weight: 300;
+        }
+
+        /* ── Divider Quote ── */
+        .divider-quote {
+            text-align: center;
+            max-width: 750px;
+            margin: 10px auto 40px;
+            padding: 0 20px;
+            font-size: 0.92rem;
+            color: var(--cinereous);
+            font-style: italic;
+        }
+
+        /* ── Tips Heading ── */
+        .tips-heading {
+            text-align: center;
+            margin: 20px auto 30px;
+            padding: 0 20px;
+        }
+
+        .tips-heading h2 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 700;
+            font-size: 2.4rem;
+            color: var(--blood-red);
+        }
+
+        /* ── Habit Cards Container ── */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 22px;
+        }
+
+        /* ── Habit Card ── */
+        .card {
+            background: var(--card-bg);
+            color: var(--text-on-dark);
+            padding: 28px 24px 22px;
+            border-radius: 14px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid var(--blood-red);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px var(--shadow);
+            background: var(--card-bg-hover);
+        }
+
+        .number {
+            position: absolute;
+            top: 8px;
+            right: 14px;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: rgba(116, 7, 14, 0.15);
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--vanilla);
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--text-on-dark-muted);
+            font-weight: 300;
+            margin-bottom: 14px;
+        }
+
+        /* ── Article Links ── */
+        .article-links {
+            border-top: 1px solid rgba(148, 114, 104, 0.25);
+            padding-top: 12px;
+            margin-top: 6px;
+        }
+
+        .article-links span {
+            display: block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--cinereous);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .article-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.82rem;
+            color: var(--link-color);
+            text-decoration: none;
+            margin-right: 14px;
+            margin-bottom: 6px;
+            font-weight: 400;
+            transition: color 0.2s ease;
+        }
+
+        .article-links a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        .article-links a::before {
+            content: '→';
+            font-size: 0.85rem;
+        }
+
+        /* ── Comments Section ── */
+        .comments-section {
+            max-width: 1000px;
+            margin: 60px auto 0;
+            padding: 0 20px 60px;
+        }
+
+        .comments-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--blood-red);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Comment Form */
+        .comment-form {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(49, 14, 16, 0.06);
+            margin-bottom: 30px;
+            border-top: 3px solid var(--blood-red);
+        }
+
+        .comment-form h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--black-bean);
+            margin-bottom: 18px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .form-row input {
+            flex: 1;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #e0d8c4;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            background: var(--bg-accent);
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .comment-form input::placeholder,
+        .comment-form textarea::placeholder {
+            color: var(--cinereous);
+        }
+
+        .comment-form input:focus,
+        .comment-form textarea:focus {
+            border-color: var(--blood-red);
+        }
+
+        .comment-form textarea {
+            min-height: 110px;
+            resize: vertical;
+            margin-bottom: 14px;
+        }
+
+        .comment-form button {
+            background: var(--blood-red);
+            color: var(--vanilla);
+            border: none;
+            padding: 12px 32px;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .comment-form button:hover {
+            background: var(--black-bean);
+            transform: translateY(-1px);
+        }
+
+        /* Comments List */
+        .comments-list h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--black-bean);
+            margin-bottom: 16px;
+        }
+
+        .comment {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(49, 14, 16, 0.05);
+            border-left: 4px solid var(--blood-red);
+        }
+
+        .comment .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .comment .comment-author {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--black-bean);
+        }
+
+        .comment .comment-date {
+            font-size: 0.78rem;
+            color: var(--cinereous);
+        }
+
+        .comment .comment-body {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        .no-comments {
+            text-align: center;
+            color: var(--cinereous);
+            font-size: 0.9rem;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        /* ── Footer ── */
+        footer {
+            background: linear-gradient(135deg, var(--black-bean) 0%, var(--blood-red) 100%);
+            color: var(--text-on-dark-muted);
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.85rem;
+            font-weight: 300;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 650px) {
+            header h1 { font-size: 2.6rem; }
+            .about-section { grid-template-columns: 1fr; }
+            .form-row { flex-direction: column; gap: 10px; }
+            .tips-heading h2 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ════════════ HEADER ════════════ -->
+    <header>
+        <h1>BetterYOU</h1>
+        <p class="subtitle">Be a better version of yourself, for yourself.</p>
+    </header>
+
+    <!-- ════════════ ABOUT SECTION ════════════ -->
+    <section class="about-section">
+        <div class="about-card">
+            <h3><span class="icon">✦</span> Our Mission</h3>
+            <p>We believe small daily habits compound into extraordinary results. Our goal is to give you the roadmap backed by evidence.</p>
+        </div>
+        <div class="about-card">
+            <h3><span class="icon">✦</span> Why Habits?</h3>
+            <p>Research shows that roughly 40% of our daily actions are habitual. Reshape those patterns and you reshape your entire life.</p>
+        </div>
+        <div class="about-card">
+            <h3><span class="icon">✦</span> How to Use</h3>
+            <p>Read each habit below, explore the linked articles for deeper evidence, and start with just one habit this week.</p>
+        </div>
+    </section>
+
+    <p class="divider-quote">"We are what we repeatedly do. Excellence, then, is not an act, but a habit." — Will Durant</p>
+
+    <!-- ════════════ TIPS HEADING ════════════ -->
+    <div class="tips-heading">
+        <h2>Need some tips? Read these:</h2>
+    </div>
+
+    <!-- ════════════ HABIT CARDS ════════════ -->
+    <div class="container">
+
+        <!-- Habit 1 -->
+        <div class="card">
+            <span class="number">01</span>
+            <h3>Morning Routine</h3>
+            <p>Start your day with intention. Avoid screens for the first 30 minutes to set a calm, focused tone.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.healthline.com/health/healthy-morning-routine" target="_blank">Healthline — Morning Routines</a>
+                <a href="https://hbr.org/2016/07/how-a-morning-routine-can-boost-your-productivity" target="_blank">HBR — Morning &amp; Productivity</a>
+            </div>
+        </div>
+
+        <!-- Habit 2 -->
+        <div class="card">
+            <span class="number">02</span>
+            <h3>Daily Reading</h3>
+            <p>Read at least 10-20 pages a day. Knowledge compounds over time, leading to better decision-making.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3868356/" target="_blank">NIH — Reading &amp; Brain Connectivity</a>
+                <a href="https://www.healthline.com/health/benefits-of-reading-books" target="_blank">Healthline — Benefits of Reading</a>
+            </div>
+        </div>
+
+        <!-- Habit 3 -->
+        <div class="card">
+            <span class="number">03</span>
+            <h3>Physical Exercise</h3>
+            <p>Move your body for 30 minutes. Exercise boosts endorphins, reduces stress, and improves focus.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.mayoclinic.org/healthy-lifestyle/fitness/in-depth/exercise/art-20048389" target="_blank">Mayo Clinic — Exercise Benefits</a>
+                <a href="https://www.cdc.gov/physical-activity/benefits/index.html" target="_blank">CDC — Physical Activity</a>
+            </div>
+        </div>
+
+        <!-- Habit 4 -->
+        <div class="card">
+            <span class="number">04</span>
+            <h3>Goal Setting</h3>
+            <p>Write down your goals every morning. Be specific about the top 3 things you want to achieve.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.psychologytoday.com/us/basics/motivation/setting-goals" target="_blank">Psychology Today — Setting Goals</a>
+                <a href="https://positivepsychology.com/goal-setting/" target="_blank">PosPsych — Science of Goal Setting</a>
+            </div>
+        </div>
+
+        <!-- Habit 5 -->
+        <div class="card">
+            <span class="number">05</span>
+            <h3>Deep Work</h3>
+            <p>Block out distractions for 90 minutes. Focus on a single complex task to enter a flow state.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.calnewport.com/blog/2012/11/21/knowledge-workers-are-bad-at-working-and-heres-what-to-do-about-it/" target="_blank">Cal Newport — Deep Work Blog</a>
+                <a href="https://hbr.org/2017/03/to-concentrate-better-focus-on-doing-less" target="_blank">HBR — Concentrate Better</a>
+            </div>
+        </div>
+
+        <!-- Habit 6 -->
+        <div class="card">
+            <span class="number">06</span>
+            <h3>Gratitude Journaling</h3>
+            <p>Write down 3 things you are grateful for every night. It shifts your mindset from scarcity to abundance.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://greatergood.berkeley.edu/article/item/tips_for_keeping_a_gratitude_journal" target="_blank">UC Berkeley — Gratitude Journal Tips</a>
+                <a href="https://www.health.harvard.edu/healthbeat/giving-thanks-can-make-you-happier" target="_blank">Harvard Health — Gratitude &amp; Happiness</a>
+            </div>
+        </div>
+
+        <!-- Habit 7 -->
+        <div class="card">
+            <span class="number">07</span>
+            <h3>Healthy Eating</h3>
+            <p>Fuel your body with whole foods. Avoid heavy sugar crashes to maintain steady energy levels.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.hsph.harvard.edu/nutritionsource/healthy-eating-plate/" target="_blank">Harvard — Healthy Eating Plate</a>
+                <a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" target="_blank">WHO — Healthy Diet Facts</a>
+            </div>
+        </div>
+
+        <!-- Habit 8 -->
+        <div class="card">
+            <span class="number">08</span>
+            <h3>Learn Something New</h3>
+            <p>Dedicate time to learning a skill or language. Continuous learning keeps the brain plastic and sharp.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4154531/" target="_blank">NIH — Lifelong Learning &amp; the Brain</a>
+                <a href="https://www.apa.org/monitor/2014/10/learning" target="_blank">APA — Never Stop Learning</a>
+            </div>
+        </div>
+
+        <!-- Habit 9 -->
+        <div class="card">
+            <span class="number">09</span>
+            <h3>Networking</h3>
+            <p>Connect with at least one new person or nurture an existing relationship weekly.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://hbr.org/2016/05/learn-to-love-networking" target="_blank">HBR — Learn to Love Networking</a>
+                <a href="https://www.forbes.com/sites/josephliu/2019/08/12/importance-of-networking/" target="_blank">Forbes — Importance of Networking</a>
+            </div>
+        </div>
+
+        <!-- Habit 10 -->
+        <div class="card">
+            <span class="number">10</span>
+            <h3>Reflection &amp; Sleep</h3>
+            <p>Review your day before bed. Ensure 7-8 hours of sleep to allow your brain to process and recover.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.sleepfoundation.org/how-sleep-works/why-do-we-need-sleep" target="_blank">Sleep Foundation — Why We Need Sleep</a>
+                <a href="https://www.nhlbi.nih.gov/health/sleep-deprivation" target="_blank">NIH — Sleep Deprivation</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ════════════ COMMENTS SECTION ════════════ -->
+    <section class="comments-section">
+        <h2>Leave a Comment</h2>
+
+        <div class="comment-form">
+            <h3>Share your thoughts</h3>
+            <div class="form-row">
+                <input type="text" id="commentName" placeholder="Your name" />
+                <input type="email" id="commentEmail" placeholder="Your email (optional)" />
+            </div>
+            <textarea id="commentText" placeholder="Write your comment here..."></textarea>
+            <button onclick="postComment()">Post Comment</button>
+        </div>
+
+        <div class="comments-list">
+            <h3>Comments (<span id="commentCount">0</span>)</h3>
+            <div id="commentsContainer">
+                <p class="no-comments" id="noComments">No comments yet — be the first to share!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════ FOOTER ════════════ -->
+    <footer>
+        <p>&copy; 2026 BetterYOU — Created for Self-Improvement</p>
+    </footer>
+
+    <!-- ════════════ COMMENT SCRIPT ════════════ -->
+    <script>
+        const comments = [];
+
+        function postComment() {
+            const nameEl  = document.getElementById('commentName');
+            const textEl  = document.getElementById('commentText');
+            const name    = nameEl.value.trim();
+            const text    = textEl.value.trim();
+
+            if (!name) { alert('Please enter your name.'); nameEl.focus(); return; }
+            if (!text) { alert('Please write a comment.');  textEl.focus(); return; }
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', {
+                year: 'numeric', month: 'short', day: 'numeric'
+            }) + ' at ' + now.toLocaleTimeString('en-US', {
+                hour: '2-digit', minute: '2-digit'
+            });
+
+            comments.unshift({ name, text, date: dateStr });
+            renderComments();
+
+            nameEl.value = '';
+            textEl.value = '';
+        }
+
+        function renderComments() {
+            const container = document.getElementById('commentsContainer');
+            const countEl   = document.getElementById('commentCount');
+            countEl.textContent = comments.length;
+
+            if (comments.length === 0) {
+                container.innerHTML = '<p class="no-comments">No comments yet — be the first to share!</p>';
+                return;
+            }
+
+            container.innerHTML = comments.map(c => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">${escapeHtml(c.name)}</span>
+                        <span class="comment-date">${c.date}</span>
+                    </div>
+                    <p class="comment-body">${escapeHtml(c.text)}</p>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        }
+    </script>
+
+</body>
+</html>
