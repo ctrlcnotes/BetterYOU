@@ -49,6 +49,34 @@
             line-height: 1.7;
         }
 
+        /* ── Animations ── */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         /* ── Header ── */
         header {
             background: linear-gradient(135deg, var(--blood-red) 0%, var(--black-bean) 100%);
@@ -383,30 +411,125 @@
             margin-bottom: 14px;
             box-shadow: 0 2px 8px rgba(49, 14, 16, 0.05);
             border-left: 4px solid var(--blood-red);
+            animation: slideIn 0.3s ease-out;
+            transition: transform 0.2s ease;
         }
 
-        .comment .comment-header {
+        .comment:hover {
+            transform: translateX(5px);
+        }
+
+        .comment.editing {
+            border-left-color: var(--drab-brown);
+            background: #f9f7f0;
+        }
+
+        .comment-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 8px;
         }
 
-        .comment .comment-author {
+        .comment-author {
             font-weight: 600;
             font-size: 0.95rem;
             color: var(--black-bean);
         }
 
-        .comment .comment-date {
+        .comment-date {
             font-size: 0.78rem;
             color: var(--cinereous);
         }
 
-        .comment .comment-body {
+        .comment-body {
             font-size: 0.9rem;
             color: var(--text-muted);
             line-height: 1.65;
+        }
+
+        .comment-edit-form {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .comment-edit-form.active {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .comment-edit-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1.5px solid var(--blood-red);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 8px;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .comment-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .comment-btn.edit {
+            color: var(--drab-brown);
+            border: 1px solid var(--drab-brown);
+        }
+
+        .comment-btn.edit:hover {
+            background: var(--drab-brown);
+            color: white;
+        }
+
+        .comment-btn.delete {
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+        }
+
+        .comment-btn.delete:hover {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .comment-btn.save {
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+        }
+
+        .comment-btn.save:hover {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .comment-btn.cancel {
+            color: var(--cinereous);
+            border: 1px solid var(--cinereous);
+        }
+
+        .comment-btn.cancel:hover {
+            background: var(--cinereous);
+            color: white;
         }
 
         .no-comments {
@@ -417,7 +540,7 @@
             font-style: italic;
         }
 
-        /* ── Footer ── */
+        /* Footer */
         footer {
             background: linear-gradient(135deg, var(--black-bean) 0%, var(--blood-red) 100%);
             color: var(--text-on-dark-muted);
@@ -427,7 +550,7 @@
             font-weight: 300;
         }
 
-        /* ── Responsive ── */
+        /* Responsive */
         @media (max-width: 650px) {
             header h1 { font-size: 2.6rem; }
             .about-section { grid-template-columns: 1fr; }
@@ -621,7 +744,12 @@
 
     <!-- ════════════ COMMENT SCRIPT ════════════ -->
     <script>
-        const comments = [];
+        // Load comments from localStorage or initialize empty array
+        let comments = JSON.parse(localStorage.getItem('betterYouComments')) || [];
+
+        function saveComments() {
+            localStorage.setItem('betterYouComments', JSON.stringify(comments));
+        }
 
         function postComment() {
             const nameEl  = document.getElementById('commentName');
@@ -639,11 +767,25 @@
                 hour: '2-digit', minute: '2-digit'
             });
 
-            comments.unshift({ name, text, date: dateStr });
+            const newComment = { 
+                id: Date.now(), // Unique ID for editing/deleting
+                name, 
+                text, 
+                date: dateStr 
+            };
+
+            comments.unshift(newComment);
+            saveComments();
             renderComments();
 
             nameEl.value = '';
             textEl.value = '';
+            
+            // Add a subtle pulse animation to the comment form
+            document.querySelector('.comment-form').style.animation = 'pulse 0.3s ease';
+            setTimeout(() => {
+                document.querySelector('.comment-form').style.animation = '';
+            }, 300);
         }
 
         function renderComments() {
@@ -657,14 +799,88 @@
             }
 
             container.innerHTML = comments.map(c => `
-                <div class="comment">
+                <div class="comment" id="comment-${c.id}" style="animation: slideIn 0.3s ease-out">
                     <div class="comment-header">
                         <span class="comment-author">${escapeHtml(c.name)}</span>
                         <span class="comment-date">${c.date}</span>
                     </div>
-                    <p class="comment-body">${escapeHtml(c.text)}</p>
+                    <div class="comment-body-wrapper">
+                        <p class="comment-body" id="body-${c.id}">${escapeHtml(c.text)}</p>
+                        <div class="comment-edit-form" id="edit-form-${c.id}">
+                            <textarea id="edit-text-${c.id}">${escapeHtml(c.text)}</textarea>
+                            <div class="comment-actions">
+                                <button class="comment-btn save" onclick="saveEdit(${c.id})">Save</button>
+                                <button class="comment-btn cancel" onclick="cancelEdit(${c.id})">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-actions">
+                        <button class="comment-btn edit" onclick="startEdit(${c.id})">Edit</button>
+                        <button class="comment-btn delete" onclick="deleteComment(${c.id})">Delete</button>
+                    </div>
                 </div>
             `).join('');
+        }
+
+        function startEdit(id) {
+            const commentDiv = document.getElementById(`comment-${id}`);
+            const body = document.getElementById(`body-${id}`);
+            const editForm = document.getElementById(`edit-form-${id}`);
+            
+            commentDiv.classList.add('editing');
+            body.style.display = 'none';
+            editForm.classList.add('active');
+            
+            const textarea = document.getElementById(`edit-text-${id}`);
+            textarea.focus();
+            textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+        }
+
+        function cancelEdit(id) {
+            const commentDiv = document.getElementById(`comment-${id}`);
+            const body = document.getElementById(`body-${id}`);
+            const editForm = document.getElementById(`edit-form-${id}`);
+            
+            commentDiv.classList.remove('editing');
+            body.style.display = 'block';
+            editForm.classList.remove('active');
+        }
+
+        function saveEdit(id) {
+            const textarea = document.getElementById(`edit-text-${id}`);
+            const newText = textarea.value.trim();
+            
+            if (!newText) {
+                alert('Comment cannot be empty');
+                return;
+            }
+
+            const comment = comments.find(c => c.id === id);
+            if (comment) {
+                comment.text = newText;
+                const now = new Date();
+                comment.date = now.toLocaleDateString('en-US', {
+                    year: 'numeric', month: 'short', day: 'numeric'
+                }) + ' at ' + now.toLocaleTimeString('en-US', {
+                    hour: '2-digit', minute: '2-digit'
+                }) + ' (edited)';
+                
+                saveComments();
+                renderComments();
+            }
+        }
+
+        function deleteComment(id) {
+            if (confirm('Are you sure you want to delete this comment?')) {
+                const commentEl = document.getElementById(`comment-${id}`);
+                commentEl.style.animation = 'fadeOut 0.3s ease-out';
+                
+                setTimeout(() => {
+                    comments = comments.filter(c => c.id !== id);
+                    saveComments();
+                    renderComments();
+                }, 300);
+            }
         }
 
         function escapeHtml(str) {
@@ -672,6 +888,16 @@
             div.appendChild(document.createTextNode(str));
             return div.innerHTML;
         }
+
+        // Initial render
+        renderComments();
+
+        // Allow Ctrl+Enter to submit comment
+        document.getElementById('commentText').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                postComment();
+            }
+        });
     </script>
 
 </body>
