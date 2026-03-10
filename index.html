@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BetterYOU - Top 10 Self-Improvement Habits</title>
+    <title>BetterYOU - Top 20 Self-Improvement Habits</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
 
     <style>
         /* ── Color Palette ── */
@@ -75,6 +79,11 @@
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         /* ── Header ── */
@@ -391,9 +400,14 @@
             transition: background 0.2s ease, transform 0.15s ease;
         }
 
-        .comment-form button:hover {
+        .comment-form button:hover:not(:disabled) {
             background: var(--black-bean);
             transform: translateY(-1px);
+        }
+
+        .comment-form button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         /* Comments List */
@@ -537,6 +551,24 @@
             color: var(--cinereous);
             font-size: 0.9rem;
             padding: 20px;
+            font-style: italic;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--cinereous);
+            border-top: 2px solid var(--blood-red);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        .firebase-status {
+            text-align: center;
+            color: var(--cinereous);
+            font-size: 0.8rem;
+            margin-bottom: 15px;
             font-style: italic;
         }
 
@@ -713,11 +745,135 @@
             </div>
         </div>
 
+        <!-- Habit 11 -->
+        <div class="card">
+            <span class="number">11</span>
+            <h3>Meditation & Mindfulness</h3>
+            <p>Practice 10-15 minutes of meditation daily. Reduces anxiety, improves emotional regulation, and increases self-awareness.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.mindful.org/meditation/mindfulness-getting-started/" target="_blank">Mindful — Getting Started with Meditation</a>
+                <a href="https://www.mayoclinic.org/tests-procedures/meditation/in-depth/meditation/art-20045858" target="_blank">Mayo Clinic — Meditation Benefits</a>
+            </div>
+        </div>
+
+        <!-- Habit 12 -->
+        <div class="card">
+            <span class="number">12</span>
+            <h3>Time Management</h3>
+            <p>Use the Pomodoro Technique or time-blocking. Organize your day to maximize productivity and reduce procrastination.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique" target="_blank">Wikipedia — Pomodoro Technique</a>
+                <a href="https://www.asana.com/resources/articles/time-blocking" target="_blank">Asana — Time Blocking Guide</a>
+            </div>
+        </div>
+
+        <!-- Habit 13 -->
+        <div class="card">
+            <span class="number">13</span>
+            <h3>Financial Planning</h3>
+            <p>Track your spending and budget monthly. Build an emergency fund and invest in your future consistently.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.investor.gov/guides/essentials/investing" target="_blank">SEC — Investing Essentials</a>
+                <a href="https://www.nfcc.org/get-financial-help/budgeting/" target="_blank">NFCC — Budgeting Guide</a>
+            </div>
+        </div>
+
+        <!-- Habit 14 -->
+        <div class="card">
+            <span class="number">14</span>
+            <h3>Mental Health Check-ins</h3>
+            <p>Weekly reflection on your emotional state. Seek therapy or coaching when needed. Prioritize your mental wellness.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.samhsa.gov/mental-health" target="_blank">SAMHSA — Mental Health Resources</a>
+                <a href="https://www.apa.org/monitor/2022/06/mental-health" target="_blank">APA — Mental Health Matters</a>
+            </div>
+        </div>
+
+        <!-- Habit 15 -->
+        <div class="card">
+            <span class="number">15</span>
+            <h3>Side Projects & Creativity</h3>
+            <p>Dedicate time to creative pursuits. Whether art, coding, or writing, nurture your creative side for fulfillment.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.psychologytoday.com/us/basics/creativity" target="_blank">Psychology Today — Creativity</a>
+                <a href="https://www.ted.com/search?q=creative-thinking" target="_blank">TED — Creative Thinking Talks</a>
+            </div>
+        </div>
+
+        <!-- Habit 16 -->
+        <div class="card">
+            <span class="number">16</span>
+            <h3>Public Speaking Practice</h3>
+            <p>Join a Toastmasters club or practice speaking regularly. Build confidence and communication skills.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.toastmasters.org/" target="_blank">Toastmasters International</a>
+                <a href="https://www.ted.com/talks/search?sort=relevance&q=public%20speaking" target="_blank">TED — Public Speaking Talks</a>
+            </div>
+        </div>
+
+        <!-- Habit 17 -->
+        <div class="card">
+            <span class="number">17</span>
+            <h3>Attend Learning Events</h3>
+            <p>Go to conferences, workshops, or seminars monthly. Expand knowledge and build professional relationships.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.eventbrite.com/" target="_blank">Eventbrite — Find Events</a>
+                <a href="https://www.linkedin.com/business/learning/" target="_blank">LinkedIn Learning</a>
+            </div>
+        </div>
+
+        <!-- Habit 18 -->
+        <div class="card">
+            <span class="number">18</span>
+            <h3>Digital Detox</h3>
+            <p>Schedule regular breaks from screens. Designate tech-free time for better sleep and mental clarity.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.verywellmind.com/digital-detox-4157046" target="_blank">Verywell Mind — Digital Detox</a>
+                <a href="https://www.sleepfoundation.org/sleep-hygiene/screen-time-before-bed" target="_blank">Sleep Foundation — Screen Time</a>
+            </div>
+        </div>
+
+        <!-- Habit 19 -->
+        <div class="card">
+            <span class="number">19</span>
+            <h3>Mentoring Others</h3>
+            <p>Help someone through mentorship or volunteering. Teaching reinforces your own learning and builds character.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.idealist.org/get-involved/volunteer" target="_blank">Idealist — Volunteer Opportunities</a>
+                <a href="https://www.forbes.com/sites/ashleystahl/2019/10/31/why-mentoring-others-matters/" target="_blank">Forbes — Benefits of Mentoring</a>
+            </div>
+        </div>
+
+        <!-- Habit 20 -->
+        <div class="card">
+            <span class="number">20</span>
+            <h3>Personal Development Review</h3>
+            <p>Quarterly review of your progress. Set new goals, celebrate wins, and adjust your habits as needed.</p>
+            <div class="article-links">
+                <span>Read the evidence</span>
+                <a href="https://www.mindtools.com/pages/article/newISS_01.htm" target="_blank">MindTools — Personal Development</a>
+                <a href="https://www.atlassian.com/team-playbook/retrospectives" target="_blank">Atlassian — Retrospectives</a>
+            </div>
+        </div>
+
     </div>
 
     <!-- ════════════ COMMENTS SECTION ════════════ -->
     <section class="comments-section">
         <h2>Leave a Comment</h2>
+
+        <div class="firebase-status" id="firebaseStatus">
+            <span class="loading-spinner"></span> Connecting to Firebase...
+        </div>
 
         <div class="comment-form">
             <h3>Share your thoughts</h3>
@@ -726,7 +882,7 @@
                 <input type="email" id="commentEmail" placeholder="Your email (optional)" />
             </div>
             <textarea id="commentText" placeholder="Write your comment here..."></textarea>
-            <button onclick="postComment()">Post Comment</button>
+            <button id="postBtn" onclick="postComment()">Post Comment</button>
         </div>
 
         <div class="comments-list">
@@ -742,15 +898,58 @@
         <p>&copy; 2026 BetterYOU — Created for Self-Improvement</p>
     </footer>
 
-    <!-- ════════════ COMMENT SCRIPT ════════════ -->
+    <!-- ════════════ FIREBASE & COMMENTS SCRIPT ════════════ -->
     <script>
-        // Load comments from localStorage or initialize empty array
-        let comments = JSON.parse(localStorage.getItem('betterYouComments')) || [];
+        // ═══════════════════════════════════════════════════════
+        // FIREBASE CONFIGURATION
+        // ═══════════════════════════════════════════════════════
+        // Replace these values with your Firebase project credentials
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFzBtNxPAaNyqcF0X8zNbXjX2cnuqUEU8",
+            authDomain: "betteryou-32e9f.firebaseapp.com",
+            databaseURL: "https://console.firebase.google.com/project/betteryou-32e9f/database",
+            projectId: "betteryou-32e9f",
+            storageBucket: "betteryou-32e9f.firebasestorage.app",
+            messagingSenderId: "552233414380",
+            appId: "1:552233414380:web:4778db878f43ff53d33fc9"
+        };
 
-        function saveComments() {
-            localStorage.setItem('betterYouComments', JSON.stringify(comments));
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const commentsRef = database.ref('betterYouComments');
+
+        let firebaseReady = false;
+
+        // ═══════════════════════════════════════════════════════
+        // FIREBASE CONNECTION HANDLER
+        // ═══════════════════════════════════════════════════════
+        commentsRef.on('value', (snapshot) => {
+            firebaseReady = true;
+            updateFirebaseStatus(true);
+            const comments = snapshot.val() || {};
+            renderComments(comments);
+        }, (error) => {
+            console.error('Firebase error:', error);
+            updateFirebaseStatus(false);
+        });
+
+        function updateFirebaseStatus(isConnected) {
+            const statusEl = document.getElementById('firebaseStatus');
+            const postBtn = document.getElementById('postBtn');
+            
+            if (isConnected) {
+                statusEl.style.display = 'none';
+                postBtn.disabled = false;
+            } else {
+                statusEl.innerHTML = '⚠ Firebase connection error. Comments may not sync.';
+                postBtn.disabled = true;
+            }
         }
 
+        // ═══════════════════════════════════════════════════════
+        // POST COMMENT
+        // ═══════════════════════════════════════════════════════
         function postComment() {
             const nameEl  = document.getElementById('commentName');
             const textEl  = document.getElementById('commentText');
@@ -760,6 +959,10 @@
             if (!name) { alert('Please enter your name.'); nameEl.focus(); return; }
             if (!text) { alert('Please write a comment.');  textEl.focus(); return; }
 
+            const postBtn = document.getElementById('postBtn');
+            postBtn.disabled = true;
+            postBtn.textContent = 'Posting...';
+
             const now = new Date();
             const dateStr = now.toLocaleDateString('en-US', {
                 year: 'numeric', month: 'short', day: 'numeric'
@@ -767,38 +970,56 @@
                 hour: '2-digit', minute: '2-digit'
             });
 
-            const newComment = { 
-                id: Date.now(), // Unique ID for editing/deleting
-                name, 
-                text, 
-                date: dateStr 
+            const commentId = Date.now().toString();
+            const newComment = {
+                id: commentId,
+                name,
+                text,
+                date: dateStr,
+                timestamp: Date.now()
             };
 
-            comments.unshift(newComment);
-            saveComments();
-            renderComments();
-
-            nameEl.value = '';
-            textEl.value = '';
-            
-            // Add a subtle pulse animation to the comment form
-            document.querySelector('.comment-form').style.animation = 'pulse 0.3s ease';
-            setTimeout(() => {
-                document.querySelector('.comment-form').style.animation = '';
-            }, 300);
+            // Save to Firebase
+            commentsRef.child(commentId).set(newComment)
+                .then(() => {
+                    nameEl.value = '';
+                    textEl.value = '';
+                    postBtn.disabled = false;
+                    postBtn.textContent = 'Post Comment';
+                    
+                    // Pulse animation
+                    document.querySelector('.comment-form').style.animation = 'pulse 0.3s ease';
+                    setTimeout(() => {
+                        document.querySelector('.comment-form').style.animation = '';
+                    }, 300);
+                })
+                .catch((error) => {
+                    console.error('Error posting comment:', error);
+                    alert('Error posting comment. Please try again.');
+                    postBtn.disabled = false;
+                    postBtn.textContent = 'Post Comment';
+                });
         }
 
-        function renderComments() {
+        // ═══════════════════════════════════════════════════════
+        // RENDER COMMENTS
+        // ═══════════════════════════════════════════════════════
+        function renderComments(commentsObj) {
             const container = document.getElementById('commentsContainer');
             const countEl   = document.getElementById('commentCount');
-            countEl.textContent = comments.length;
+            
+            // Convert object to array and sort by timestamp (newest first)
+            const commentsArray = Object.values(commentsObj || {});
+            commentsArray.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            
+            countEl.textContent = commentsArray.length;
 
-            if (comments.length === 0) {
+            if (commentsArray.length === 0) {
                 container.innerHTML = '<p class="no-comments">No comments yet — be the first to share!</p>';
                 return;
             }
 
-            container.innerHTML = comments.map(c => `
+            container.innerHTML = commentsArray.map(c => `
                 <div class="comment" id="comment-${c.id}" style="animation: slideIn 0.3s ease-out">
                     <div class="comment-header">
                         <span class="comment-author">${escapeHtml(c.name)}</span>
@@ -809,19 +1030,22 @@
                         <div class="comment-edit-form" id="edit-form-${c.id}">
                             <textarea id="edit-text-${c.id}">${escapeHtml(c.text)}</textarea>
                             <div class="comment-actions">
-                                <button class="comment-btn save" onclick="saveEdit(${c.id})">Save</button>
-                                <button class="comment-btn cancel" onclick="cancelEdit(${c.id})">Cancel</button>
+                                <button class="comment-btn save" onclick="saveEdit('${c.id}')">Save</button>
+                                <button class="comment-btn cancel" onclick="cancelEdit('${c.id}')">Cancel</button>
                             </div>
                         </div>
                     </div>
                     <div class="comment-actions">
-                        <button class="comment-btn edit" onclick="startEdit(${c.id})">Edit</button>
-                        <button class="comment-btn delete" onclick="deleteComment(${c.id})">Delete</button>
+                        <button class="comment-btn edit" onclick="startEdit('${c.id}')">Edit</button>
+                        <button class="comment-btn delete" onclick="deleteComment('${c.id}')">Delete</button>
                     </div>
                 </div>
             `).join('');
         }
 
+        // ═══════════════════════════════════════════════════════
+        // EDIT COMMENT
+        // ═══════════════════════════════════════════════════════
         function startEdit(id) {
             const commentDiv = document.getElementById(`comment-${id}`);
             const body = document.getElementById(`body-${id}`);
@@ -855,42 +1079,48 @@
                 return;
             }
 
-            const comment = comments.find(c => c.id === id);
-            if (comment) {
-                comment.text = newText;
-                const now = new Date();
-                comment.date = now.toLocaleDateString('en-US', {
-                    year: 'numeric', month: 'short', day: 'numeric'
-                }) + ' at ' + now.toLocaleTimeString('en-US', {
-                    hour: '2-digit', minute: '2-digit'
-                }) + ' (edited)';
-                
-                saveComments();
-                renderComments();
-            }
+            const now = new Date();
+            const editedDate = now.toLocaleDateString('en-US', {
+                year: 'numeric', month: 'short', day: 'numeric'
+            }) + ' at ' + now.toLocaleTimeString('en-US', {
+                hour: '2-digit', minute: '2-digit'
+            }) + ' (edited)';
+
+            commentsRef.child(id).update({
+                text: newText,
+                date: editedDate
+            }).catch((error) => {
+                console.error('Error updating comment:', error);
+                alert('Error updating comment. Please try again.');
+            });
         }
 
+        // ═══════════════════════════════════════════════════════
+        // DELETE COMMENT
+        // ═══════════════════════════════════════════════════════
         function deleteComment(id) {
             if (confirm('Are you sure you want to delete this comment?')) {
                 const commentEl = document.getElementById(`comment-${id}`);
                 commentEl.style.animation = 'fadeOut 0.3s ease-out';
                 
                 setTimeout(() => {
-                    comments = comments.filter(c => c.id !== id);
-                    saveComments();
-                    renderComments();
+                    commentsRef.child(id).remove()
+                        .catch((error) => {
+                            console.error('Error deleting comment:', error);
+                            alert('Error deleting comment. Please try again.');
+                        });
                 }, 300);
             }
         }
 
+        // ═══════════════════════════════════════════════════════
+        // UTILITY FUNCTIONS
+        // ═══════════════════════════════════════════════════════
         function escapeHtml(str) {
             const div = document.createElement('div');
             div.appendChild(document.createTextNode(str));
             return div.innerHTML;
         }
-
-        // Initial render
-        renderComments();
 
         // Allow Ctrl+Enter to submit comment
         document.getElementById('commentText').addEventListener('keydown', function(e) {
